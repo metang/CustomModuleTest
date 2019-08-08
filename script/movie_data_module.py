@@ -4,7 +4,7 @@ import json
 import sys
 import pyarrow.parquet as pq
 
-sys.path.append("../")
+#sys.path.append("../")
 from reco_utils.dataset.movielens import load_pandas_df
 from script.arg_opts import movie_data_opts
 
