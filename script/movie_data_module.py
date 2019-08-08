@@ -40,7 +40,10 @@ def main():
 
     if not os.path.exists(args.user_data_path):
         os.makedirs(args.user_data_path)
-    df_userdata.to_parquet(fname=os.path.join(args.user_data_path, args.data_size + ".parquet"), engine='pyarrow')
+    #df_userdata.to_parquet(fname=os.path.join(args.user_data_path, args.data_size + ".parquet"), engine='pyarrow')
+    #[7:33 PM] Qianlin Xia   顺便可以试试把输出的parquet的文件名改为data.dataset.parquet
+    df_userdata.to_parquet(fname=os.path.join(args.user_data_path, "data.dataset.parquet"), engine='pyarrow')
+
 
     # Dump data_type.json as a work around until SMT deploys
     dct = {

@@ -5,7 +5,7 @@ description: Module to load user rating data from http://files.grouplens.org/dat
 owner: Meng Tang
 inputs:
 - name: Data Size
-  type: String
+  type: Mode
   default: "100k"
   description: Choose data size
   options:
