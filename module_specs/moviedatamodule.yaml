@@ -1,0 +1,74 @@
+name: Movie Lens User Data
+id: 90123444-7e12-4179-927d-2d318cf416cb
+category: Data Input and Output\Public Data
+description: Module to load user rating data from http://files.grouplens.org/datasets/movielens
+owner: Meng Tang
+inputs:
+- name: Data Size
+  type: String
+  default: "100k"
+  description: Choose data size
+  options:
+    - 100k
+    - 1m
+    - 10m
+    - 20m
+- name: Include Title
+  type: Boolean
+  default: False
+  description: Set this flag if movie title column is needed
+- name: Include Genre
+  type: Boolean
+  default: False
+  description: Set this flag if movie genre column is needed
+- name: Include Year
+  type: Boolean
+  default: False
+  description: Set this flag if year of movie column is needed
+outputs:
+- name: User Data Path
+  type: TabularDataFolder
+  description: The path of outputing movie lens user rating data
+implementation:
+  container:
+    runConfig:
+      baseDockerImage: mcr.microsoft.com/azureml/base-gpu:intelmpi2018.3-cuda10.0-cudnn7-ubuntu16.04
+      gpuSupport: True  
+    conda:
+      name: project_environment
+      channels:
+      - defaults
+      dependencies:
+      - python=3.6.2
+      - pip:
+        - --extra-index-url=https://test.pypi.org/simple
+        - seqeval==0.0.5
+        - tqdm==4.31.1
+        - nltk==3.4
+        - pandas==0.24.1
+        - pyarrow==0.12.1
+        - tensorflow==1.13.1
+        - requests=2.22.0
+        - pyspark=2.4.3
+        - matplotlib=3.1.0
+        - pyarrow
+        - git+https://github.com/chjinche/azureml-custom-module-examples.git@master#subdirectory=ner-bert
+    command:
+    - python
+    - -m
+    - script.preprocess
+    args:
+    - --data_size
+    - inputValue: Data Size
+    - --include_title
+    - inputValue: Include Title
+    - --include_genre
+    - inputValue: Include Genre
+    - --include_year
+    - inputValue: Include Year
+    - --user_data_path
+    - outputPath: User Data Path
+  invoking:
+    module: script.preprocess
+    class: PreProcess
+    func: run
